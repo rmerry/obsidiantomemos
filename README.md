@@ -5,6 +5,7 @@ Very simple script I wrote to import a raw [Obsidian](https://obsidian.md/) vaul
 ## Usage
 
 ```sh
-go run main.go <MEMOS-URL> <MEMOS-ACCESS-TOKEN> <VAULT-DIR> ```
+go run main.go <MEMOS-URL> <MEMOS-ACCESS-TOKEN> <VAULT-DIR>
+```
 
 
