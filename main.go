@@ -25,18 +25,18 @@ func main() {
 	if !path.IsAbs(dir) {
 		cwd, err := os.Getwd()
 		if err != nil {
-			panic(err.Error())
+			panic(err)
 		}
 		dir = path.Join(cwd, dir)
 	}
 
 	fi, err := os.Stat(dir)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	if !fi.IsDir() {
-		fmt.Println("ERROR: supplied path not a directory")
+		panic("ERROR: supplied path not a directory")
 	}
 
 	list := buildList(dir, []string{})
@@ -55,7 +55,7 @@ var markdownFileRegex = regexp.MustCompile(`^(.+)\.[Mm][dD]$`)
 func buildList(dir string, tags []string) []memo {
 	fi, err := os.Stat(dir)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 	if !fi.IsDir() {
 		return []memo{}
@@ -63,7 +63,7 @@ func buildList(dir string, tags []string) []memo {
 
 	list, err := os.ReadDir(dir)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 
 	var memos []memo
@@ -82,6 +82,7 @@ func buildList(dir string, tags []string) []memo {
 			body, err := os.ReadFile(absPath)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err.Error())
+				continue
 			}
 
 			memos = append(memos, memo{
@@ -101,10 +102,10 @@ type memoRequest struct {
 	Visibility string `json:"visibility"`
 }
 
-func postToMemos(baseURL, token string, memos []memo) error {
+func postToMemos(baseURL, token string, memos []memo) {
 	apiURL, err := url.JoinPath(baseURL, "/api/v1/memos")
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	client := http.Client{}
@@ -141,8 +142,6 @@ func postToMemos(baseURL, token string, memos []memo) error {
 			fmt.Fprintf(os.Stderr, "unexpected status code: %d\n", resp.StatusCode)
 		}
 	}
-
-	return nil
 }
 
 func tagsString(tags []string) string {
