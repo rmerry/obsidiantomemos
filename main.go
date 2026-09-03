@@ -50,15 +50,6 @@ type memo struct {
 	tags  []string
 }
 
-func (m *memo) String() string {
-	return fmt.Sprintf(`===
-title: %s
-path: %s
-tags: %s
-
-`, m.title, m.path, strings.Join(m.tags, ", "))
-}
-
 var markdownFileRegex = regexp.MustCompile(`^(.+)\.[Mm][dD]$`)
 
 func buildList(dir string, tags []string) []memo {
@@ -165,8 +156,8 @@ func tagsString(tags []string) string {
 }
 
 func printUsage() {
-	fmt.Println("USAGE: obsidian2memos <URL> <TOKEN> <DIR>")
+	fmt.Println("USAGE: obsidiantomemos <URL> <TOKEN> <DIR>")
 	fmt.Println("\tURL\tThe URL of the memos instance; when specifying an IP address remember to include the port.")
 	fmt.Println("\tTOKEN\tThe memos API token.")
-	fmt.Println("\tDIR\tDirectory containing any number of markdown files and subdirectories.")
+	fmt.Println("\tDIR\tObsidian vault directory containing any number of markdown files and subdirectories.")
 }
